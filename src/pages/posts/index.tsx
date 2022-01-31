@@ -6,6 +6,7 @@ import { RichText } from "prismic-dom";
 import { getPrismicClient } from "../../services/prismic";
 import styles from "./styles.module.scss";
 import Link from "next/link";
+import ApiSearchResponse from "@prismicio/client/types/ApiSearchResponse";
 
 type Post = {
   slug: string;
@@ -27,7 +28,7 @@ export default function Posts({ posts }: PostsProps) {
 
       <main className={styles.container}>
         <div className={styles.posts}>
-          {posts.map((post) => (
+          {posts.map(post => (
             <Link href={`/posts/${post.slug}`} key={post.slug}>
               <a>
                 <time>{post.updatedAt}</time>
@@ -45,7 +46,7 @@ export default function Posts({ posts }: PostsProps) {
 export const getStaticProps: GetStaticProps = async () => {
   const prismic = getPrismicClient();
 
-  const response = await prismic.query(
+  const response: ApiSearchResponse = await prismic.query(
     [Prismic.Predicates.at("document.type", "post")],
     {
       fetch: ["publication.title", "publication.content"],
@@ -53,13 +54,13 @@ export const getStaticProps: GetStaticProps = async () => {
     }
   );
 
-  const posts = response.results.map((post) => {
+  const posts = response.results.map(post => {
     return {
       slug: post.uid,
       title: RichText.asText(post.data.title),
       excerpt:
-        post.data.content.find((content) => content.type === "paragraph")
-          ?.text ?? "",
+        post.data.content.find(content => content.type === "paragraph")?.text ??
+        "",
       updatedAt: new Date(post.last_publication_date).toLocaleDateString(
         "pt-BR",
         {

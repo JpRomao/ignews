@@ -36,6 +36,11 @@ export default function Post({ post }: PostProps) {
   );
 }
 
+type PrismicData = {
+  title: string;
+  content: string;
+};
+
 export const getServerSideProps: GetServerSideProps = async ({
   req,
   params,
@@ -54,7 +59,11 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   const prismic = getPrismicClient(req);
 
-  const response = await prismic.getByUID("post", String(slug), {});
+  const response = await prismic.getByUID<PrismicData>(
+    "post",
+    String(slug),
+    {}
+  );
 
   const post = {
     slug,

@@ -7,6 +7,7 @@ import styles from "../post.module.scss";
 import { getPrismicClient } from "../../../services/prismic";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { Document } from "@prismicio/client/types/documents";
 
 interface PostPreviewProps {
   post: {
@@ -67,7 +68,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   const prismic = getPrismicClient();
 
-  const response = await prismic.getByUID("post", String(slug), {});
+  const response: Document<any> = await prismic.getByUID(
+    "post",
+    String(slug),
+    {}
+  );
 
   const post = {
     slug,
