@@ -1,6 +1,6 @@
 <h1>
   <a href="https://ignews-joao.vercel.app/">
-    Ignews - João
+    Ignews
   </a>
 </h1>
 

@@ -1,12 +1,34 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import ActiveLink from ".";
 
-test("active link should renders correctly", () => {
-  render(
-    <ActiveLink href="/" activeClassname="active">
-      <a>Home</a>
-    </ActiveLink>
-  );
+jest.mock("next/router", () => {
+  return {
+    useRouter() {
+      return {
+        asPath: "/",
+      };
+    },
+  };
+});
 
-  debug();
+describe("ActiveLink Component", () => {
+  it("renders correctly", () => {
+    render(
+      <ActiveLink href="/" activeClassname="active">
+        <a>Home</a>
+      </ActiveLink>
+    );
+
+    expect(screen.getByText("Home")).toBeInTheDocument();
+  });
+
+  it("adds active class if the link is currently active", () => {
+    render(
+      <ActiveLink href="/" activeClassname="active">
+        <a>Home</a>
+      </ActiveLink>
+    );
+
+    expect(screen.getByText("Home")).toHaveClass("active");
+  });
 });
